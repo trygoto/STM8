@@ -1,0 +1,81 @@
+[InterruptLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+SumSortOrder=0
+[Interrupts]
+Enabled=1
+[MemoryMap]
+Enabled=0
+Base=0
+UseAuto=0
+TypeViolation=1
+UnspecRange=1
+ActionState=1
+[TraceHelper]
+Enabled=0
+ShowSource=1
+[DebugChecksum]
+Checksum=612482558
+[DisAssemblyWindow]
+NumStates=_ 1
+State 1=_ 1
+[InstructionProfiling]
+Enabled=_ 0
+[CodeCoverage]
+Enabled=_ 0
+[StackPlugin]
+Enabled=1
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnHow=0
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[Stack]
+FillEnabled=0
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnLogOnly=1
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[CallStack]
+ShowArgs=0
+[Disassembly]
+MixedMode=1
+[array_types]
+Fmt0=u8[100]	5	0
+[DataSample]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[Breakpoints]
+Count=0
+[Aliases]
+A0=_ "C:\Users\LQ\Desktop\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\STM8S_StdPeriph_Driver\src\stm8s_uart2.c" "C:\Users\LQ\Desktop\LH-LVDC-A\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\STM8S_StdPeriph_Driver\src\stm8s_uart2.c"
+A1=_ "C:\Users\LQ\Desktop\完成（缺少丢失应答）\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\APP\main.c" "C:\Users\LQ\Desktop\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\APP\main.c"
+A2=_ "C:\Users\LQ\Desktop\完成（缺少校验）\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\STM8S_StdPeriph_Driver\src\stm8s_clk.c" ""
+A3=_ "C:\Users\LQ\Desktop\完成（缺少校验）\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\STM8S_StdPeriph_Driver\src\stm8s_tim2.c" ""
+A4=_ "C:\Users\LQ\Desktop\完成（缺少校验）\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\STM8S_StdPeriph_Driver\src\stm8s_uart2.c" ""
+A5=_ "C:\Users\LQ\Desktop\完成（缺少校验）\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\USER\CRC_8.c" ""
+A6=_ "C:\Users\LQ\Desktop\完成（缺少校验）\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\USER\UART2.c" ""
+A7=_ "C:\Users\LQ\Desktop\完成（缺少校验）\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\USER\key_scan.c" ""
+A8=_ "C:\Users\LQ\Desktop\完成（缺少校验）\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\USER\tim2.c" ""
+Count=9
+SuppressDialog=0
+[DebuggerSettings]
+DisableInterruptsWhenStepping=1

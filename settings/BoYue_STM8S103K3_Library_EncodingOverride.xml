@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<userOverrides>
+    <override>
+        <path>C:\Users\LQ\Desktop\CONTROL\STM8\完成（缺少校验）\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\USER\task.c</path>
+        <encoding>GB2312</encoding>
+    </override>
+    <override>
+        <path>C:\Users\LQ\Desktop\LH-LVDC-A\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\USER\task.c</path>
+        <encoding>GB2312</encoding>
+    </override>
+    <override>
+        <path>C:\Users\LQ\Desktop\LH-LVDC-AXX\最终版本\LH-LVDC-A\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\USER\task.c</path>
+        <encoding>GB2312</encoding>
+    </override>
+    <override>
+        <path>C:\Users\LQ\Desktop\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\APP\stm8s_it.c</path>
+        <encoding>GB2312</encoding>
+    </override>
+    <override>
+        <path>C:\Users\LQ\Desktop\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\USER\task.c</path>
+        <encoding>GB2312</encoding>
+    </override>
+    <override>
+        <path>C:\Users\LQ\Desktop\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\USER\task.c</path>
+        <encoding>GB2312</encoding>
+    </override>
+    <override>
+        <path>C:\Users\LQ\Desktop\完成（缺少丢失应答）\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\USER\task.c</path>
+        <encoding>GB2312</encoding>
+    </override>
+    <override>
+        <path>C:\Users\Rex\Desktop\STM8\USER\UART2.c</path>
+        <encoding>UTF-8</encoding>
+    </override>
+</userOverrides>
