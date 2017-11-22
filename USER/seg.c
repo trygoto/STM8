@@ -3,7 +3,7 @@
 #include "stm8s.h"
 
 
-   u16 Counttime_ms=0;
+ u16 Counttime_ms=0;
  u8 ds[SMG_weinum]={1,2,3,4,5};//实际显示的
  u8 dss[SMG_weinum]={1,2,3,4,5};//需要显示的
  u8 blink=0;;

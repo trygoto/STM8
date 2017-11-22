@@ -25,6 +25,7 @@ u8 key=0;
 u8 short_key=0;
 u8 double_key=0;
 u8 long_key=0;
+u8 three_key=0;
 void KEY_Init(void)
 {
  //   GPIO_Init(GPIOE,GPIO_PIN_5,GPIO_MODE_IN_PU_NO_IT);//PC6   SW02
@@ -157,8 +158,9 @@ unsigned char key_read(void)
         	case key_state_1:  
             if (key_temp == S_key)             //又一次单击（间隔肯定<500ms）
             {  
-                 key_return = D_key;           //返回双击事件，回初始状态
-                 key_m = key_state_0;  
+                 //key_return = D_key;           //返回双击事件，回初始状态
+                 key_time_1 = 0;   
+                 key_m = key_state_3;  
             }  
             else                                 
             {                                  //这里500MS内肯定读到的都是无键事件，因为长键>100ms,在1s前底层返回的都是无键ê??T?ü  
@@ -169,6 +171,21 @@ unsigned char key_read(void)
                  }  
              }  
              break;  
+			case key_state_3:
+				if(key_temp==S_key)
+				{
+					key_return = T_key;
+					key_m = key_state_0;
+				}
+				else
+				{
+					if(++key_time_1 >= 5)  
+                 	{  
+                      key_return = D_key;      // 500ms内没有再次出现单击时间，返回上一次的单击时间
+                      key_m = key_state_0;     //返回出事状态
+                 	}  
+				}
+					
     } 
     return key_return;  
 }

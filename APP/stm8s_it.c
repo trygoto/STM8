@@ -285,6 +285,10 @@ extern int datawait;
 	  { 
 	  	 ms_count=0;
 	     LED01;
+		 if(teplet==TRUE)
+		 {
+			mode_flag=~mode_flag;
+		 }
 	  }  
       if ( time == 50 ) 
     	{
@@ -292,21 +296,32 @@ extern int datawait;
 			key = key_read();
 			if (key == L_key)   
 		 	{				 
-			  	 long_key=1;;
+			  	 long_key=1;
                  double_key=0;
                  short_key=0;
+				 three_key=0;
 		 	}      
 			else if(key == D_key)   
 			{		 
 				 double_key=1;
                  long_key=0;
                  short_key=0;
+				 three_key=0;
 			}      
 			else if(key == S_key)   
 			{ 		 
 				 short_key=1;
                  double_key=0;
-                 long_key=0;		 
+                 long_key=0;
+				 three_key=0;
+			}
+			else if(key==T_key)
+			{
+
+				 short_key=0;
+                 double_key=0;
+                 long_key=0;
+				 three_key=1;
 			}
     	}   
    }
@@ -448,17 +463,26 @@ extern int wei;
     	UART2_ClearITPendingBit(UART2_IT_RXNE);  //清标志位
     	Res =UART2_ReceiveData8();               //读数据          	
 		if((USART_RX_STA&0x8000)==0)		     //接收未完成
-		{display1(20,21,28,23,24,0X1C);
+		{
 			if(USART_RX_STA&0x4000) 		     //接收到了0x0d 
 			{
 				if(Res!=0x0a)				     //接收错误，重新开始
 				{
-					USART_RX_STA=0;       
+					USART_RX_STA=0;     
+                                        
 				}
        			else							 //还没收到0x0d
-			    {                                                   
-                    USART_RX_STA|=0x8000;		 //接收完成了	
-                   
+			    {    
+			    	if((USART_RX_STA&0X3FFF)>5)
+			    	{
+                    	USART_RX_STA|=0x8000;	//接收完成了	
+			    	}
+					else
+			    	{
+			    		USART_RX_STA=0;
+			    	}
+					
+                    
                 }	 
              }	
 			else 								 //还没收到0x0d

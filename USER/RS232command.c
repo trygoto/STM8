@@ -18,7 +18,21 @@ void gmemcpy(void *pDst, const void *pSrc, unsigned long iNum)
 		*ucdst++ = *ucsrc++;
 	}
 }
+//保存参数
+void CodeSave()
+{
+	gmemcpy(send_buffer,"IDC,SAV,?,\r\n",12);	
+	send_buffer[8]=CRC8_Table(send_buffer, 8);
+	UART2_SendString(send_buffer,12);
 
+}
+//清除报警
+void CodeClear()
+{
+	gmemcpy(send_buffer,"IDC,CLE,?,\r\n",12);	
+	send_buffer[8]=CRC8_Table(send_buffer, 8);
+ 	UART2_SendString(send_buffer,12);
+}
 //恒流恒压模式设置
 void CodeP001Set(int chx,int VoltageCurrent)
 {
@@ -39,795 +53,311 @@ void CodeP001Rad(int chx)
 //设置输出电流
 void CodeP002Set(int chx,int Current)
 {
-	gmemcpy(send_buffer,"IDC,SLI,1,0012,？,\r\n",19);
- 	send_buffer[8]=chx+'0';
-	send_buffer[10]=((Current/1000)%10)+'0';
-	send_buffer[11]=((Current/100)%10)+'0';
-	send_buffer[12]=((Current/10)%10)+'0';
-	send_buffer[13]=(Current%10)+'0';
-	
-	send_buffer[15]=CRC8_Table(send_buffer, 15);
- 	UART2_SendString(send_buffer,19);
+	gmemcpy(send_buffer,"IDC,OSLI,1,0012,?,\r\n",20);
+	send_buffer[9]=chx+'0';
+	send_buffer[11]=((Current/1000)%10)+'0';
+	send_buffer[12]=((Current/100)%10)+'0';
+	send_buffer[13]=((Current/10)%10)+'0';
+	send_buffer[14]=(Current%10)+'0';
+	send_buffer[16]=CRC8_Table(send_buffer, 16);
+	UART2_SendString(send_buffer,20);
 
 }
 //读取输出电流
 void CodeP002Rad(int chx)
 {
-	gmemcpy(send_buffer,"IDC,GLI,1,？,\r\n",14);
+	gmemcpy(send_buffer,"IDC,GLI,1,?,\r\n",14);
  	send_buffer[8]=chx+'0';
 	
 	send_buffer[10]=CRC8_Table(send_buffer, 10);
  	UART2_SendString(send_buffer,14);	
 
 }
+
 //设置输出电压
 void CodeP003Set(int chx,int Voltage)
 {
 
-	gmemcpy(send_buffer,"IDC,SVOT,1,123,?,\r\n",19);
- 	send_buffer[9]=chx+'0';
+	gmemcpy(send_buffer,"IDC,OSVOT,1,123,?,\r\n",20);
+ 	send_buffer[10]=chx+'0';
 	
- 	send_buffer[11]=((Voltage/100)%10)+'0';
-	send_buffer[12]=((Voltage/10)%10)+'0';
-	send_buffer[13]=(Voltage%10)+'0';
+ 	send_buffer[12]=((Voltage/100)%10)+'0';
+	send_buffer[13]=((Voltage/10)%10)+'0';
+	send_buffer[14]=(Voltage%10)+'0';
 	
-	send_buffer[15]=CRC8_Table(send_buffer, 15);
- 	UART2_SendString(send_buffer,19);	
+	send_buffer[16]=CRC8_Table(send_buffer, 16);
+ 	UART2_SendString(send_buffer,20);	
 }
 
 //读取输出电压
 void CodeP003Rad(int chx)
 {
- 	gmemcpy(send_buffer,"IDC,GVOT,1,？,\r\n",14);
+ 	gmemcpy(send_buffer,"IDC,GVOT,1,?,\r\n",15);
 	send_buffer[9]=chx+'0';
 
 	send_buffer[11]=CRC8_Table(send_buffer, 11);
 	UART2_SendString(send_buffer,15);	
+}
+//关闭通道
+void CodeP003004(int chx)
+{
+	gmemcpy(send_buffer,"IDC,CLS,1,?,\r\n",14);
+ 	send_buffer[8]=chx+'0';
+	
+	send_buffer[10]=CRC8_Table(send_buffer, 10);
+ 	UART2_SendString(send_buffer,14);	
+
 }
 
 //设置输出电压PWM
 void CodeP004Set(int chx,int VoltagePWM)
 {
 
-	gmemcpy(send_buffer,"IDC,SPWM,1,123,?,\r\n",19);
- 	send_buffer[9]=chx+'0';
+	gmemcpy(send_buffer,"IDC,OSPWM,1,123,?,\r\n",20);
+ 	send_buffer[10]=chx+'0';
 	
- 	send_buffer[11]=((VoltagePWM/100)%10)+'0';
-	send_buffer[12]=((VoltagePWM/10)%10)+'0';
-	send_buffer[13]=(VoltagePWM%10)+'0';
+ 	send_buffer[12]=((VoltagePWM/100)%10)+'0';
+	send_buffer[13]=((VoltagePWM/10)%10)+'0';
+	send_buffer[14]=(VoltagePWM%10)+'0';
 	
-	send_buffer[15]=CRC8_Table(send_buffer, 15);
- 	UART2_SendString(send_buffer,19);	
+	send_buffer[16]=CRC8_Table(send_buffer, 16);
+ 	UART2_SendString(send_buffer,20);	
 }
 
 //读取输出电压PWM
 void CodeP004Rad(int chx)
 {
- 	gmemcpy(send_buffer,"IDC,GPWM,1,？,\r\n",14);
+ 	gmemcpy(send_buffer,"IDC,GPWM,1,?,\r\n",15);
 	send_buffer[9]=chx+'0';
 
 	send_buffer[11]=CRC8_Table(send_buffer, 11);
 	UART2_SendString(send_buffer,15);	
 }
 
+//设置频闪脉宽
+void CodeP005Set(int chx,int PulseWidth)
+{
+	gmemcpy(send_buffer,"IDC,STR,1,0120,?,\r\n",19);
+	send_buffer[8]=chx+'0';
 
+	send_buffer[10]=((PulseWidth/1000)%10)+'0';
+	send_buffer[11]=((PulseWidth/100)%10)+'0';
+	send_buffer[12]=((PulseWidth/10)%10)+'0';
+	send_buffer[13]=(PulseWidth%10)+'0';
 
-
-
-
-
-
-void RS232_command22(int num1,int num2,int num3,int num4)//甯﹀弬鏁版墦寮�閫氶亾
-{
-
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='O';
- send_buffer[5]='P';
- send_buffer[6]='S';
- send_buffer[7]='P';
- send_buffer[8]=',';
- send_buffer[9]=num1+48;
- send_buffer[10]=',';
- send_buffer[11]=num2+48;
- send_buffer[12]=num3+48;
- send_buffer[13]=num4+48;
- send_buffer[14]=',';
- send_buffer[15]=CRC8_Table(send_buffer, 15);//CRC;
- send_buffer[16]=',';
- send_buffer[17]=0x0D;
- send_buffer[18]=0x0A;
- UART2_SendString(send_buffer,19);
-  
-}
-void RS232_command2(int num)//鏌ヨ棰戦棯
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='G';
- send_buffer[5]='T';
- send_buffer[6]='R';
- send_buffer[7]=',';
- send_buffer[8]=num+48;
- send_buffer[9]=',';
- send_buffer[10]=CRC8_Table(send_buffer, 10);//CRC;
- send_buffer[11]=',';
- send_buffer[12]=0x0D;
- send_buffer[13]=0x0A;
- UART2_SendString(send_buffer,14);
-}
-
-void RS232_command23(int num1,int num2,int num3,int num4,int num5)//璁剧疆棰戦棯鑴夊
-{
-
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='T';
- send_buffer[6]='R';
- send_buffer[7]=',';
- send_buffer[8]=num1+48;
- send_buffer[9]=',';
- send_buffer[10]=num2+48;
- send_buffer[11]=num3+48;
- send_buffer[12]=num4+48;
- send_buffer[13]=num5+48;
- send_buffer[14]=',';
- send_buffer[15]=CRC8_Table(send_buffer, 15);//CRC;
- send_buffer[16]=',';
- send_buffer[17]=0x0D;
- send_buffer[18]=0x0A;
- UART2_SendString(send_buffer,19);
-  
-}
-
-void RS232_command3(int num)//鏌ヨ鐢靛帇
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='G';
- send_buffer[5]='V';
- send_buffer[6]='O';
- send_buffer[7]='T';
- send_buffer[8]=',';
- send_buffer[9]=num+48;
- send_buffer[10]=',';
- send_buffer[11]=CRC8_Table(send_buffer, 11);//CRC;
- send_buffer[12]=',';
- send_buffer[13]=0x0D;
- send_buffer[14]=0x0A;
- UART2_SendString(send_buffer,15);
-  
-}
-void RS232_command24(int num1,int num2)//璁剧疆鐢靛帇
-{
-  int out;
- if(num2==4) out=0;
- else if(num2==5) out=1;
- else if(num2==12) out=2;
- else if(num2==20) out=3;
- else if(num2==22) out=4;
- else if(num2==24) out=5;
- else if(num2==26) out=6;
- else if(num2==28) out=7;
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='V';
- send_buffer[6]='O';
- send_buffer[7]='T';
- send_buffer[8]=',';
- send_buffer[9]=num1+48;
- send_buffer[10]=',';
- send_buffer[11]=out+48;
-
- send_buffer[12]=',';
- send_buffer[13]=CRC8_Table(send_buffer, 13);//CRC;
- send_buffer[14]=',';
- send_buffer[15]=0x0D;
- send_buffer[16]=0x0A;
- UART2_SendString(send_buffer,17);
-  
-}
-void RS232_command4(int num)//鏌ヨ澶栭儴瑙﹀彂鏂瑰紡
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='G';
- send_buffer[5]='E';
- send_buffer[6]='X';
- send_buffer[7]='M';
- send_buffer[8]=',';
- send_buffer[9]=num+48;
- send_buffer[10]=',';
- send_buffer[11]=CRC8_Table(send_buffer, 11);//CRC;
- send_buffer[12]=',';
- send_buffer[13]=0x0D;
- send_buffer[14]=0x0A;
- UART2_SendString(send_buffer,15);
-  
-}
-                    
- void RS232_command25(int num1,int num2)//璁剧疆澶栭儴瑙﹀彂鏂瑰紡
-{
-
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='E';
- send_buffer[6]='X';
- send_buffer[7]='M';
- send_buffer[8]=',';
- send_buffer[9]=num1+48;
- send_buffer[10]=',';
- send_buffer[11]=num2+48;
- send_buffer[12]=',';
- send_buffer[13]=CRC8_Table(send_buffer, 13);//CRC;
- send_buffer[14]=',';
- send_buffer[15]=0x0D;
- send_buffer[16]=0x0A;
- UART2_SendString(send_buffer,17);
-  
-}
-void RS232_command5(int num )//鏌ヨ閫氶亾榛樿杈撳嚭妯″紡
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='G';
- send_buffer[5]='M';
- send_buffer[6]='O';
- send_buffer[7]='U';
- send_buffer[8]='T';
- send_buffer[9]=',';
- send_buffer[10]=num+48;
- send_buffer[11]=',';
- send_buffer[12]=CRC8_Table(send_buffer, 12);//CRC;
- send_buffer[13]=',';
- send_buffer[14]=0x0D;
- send_buffer[15]=0x0A;
- UART2_SendString(send_buffer,16);
-  
-}
-void RS232_command26(int num1,int num2)//璁剧疆閫氶亾榛樿杈撳嚭妯″紡
-{
-
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='M';
- send_buffer[6]='O';
- send_buffer[7]='U';
- send_buffer[8]='T';
- send_buffer[9]=',';
- send_buffer[10]=num1+48;
- send_buffer[11]=',';
- send_buffer[12]=num2+48;
- send_buffer[13]=',';
- send_buffer[14]=CRC8_Table(send_buffer, 14);//CRC;
- send_buffer[15]=',';
- send_buffer[16]=0x0D;
- send_buffer[17]=0x0A;
- UART2_SendString(send_buffer,18);
-  
-}
-                    
-void RS232_command6(int num)//鏌ヨ澶栭儴IO鎺ュ彛宸ヤ綔妯″紡
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='G';
- send_buffer[5]='I';
- send_buffer[6]='O';
- send_buffer[7]='M';
- send_buffer[8]=',';
- send_buffer[9]=num+48;
- send_buffer[10]=',';
- send_buffer[11]=CRC8_Table(send_buffer, 11);//CRC;
- send_buffer[12]=',';
- send_buffer[13]=0x0D;
- send_buffer[14]=0x0A;
- UART2_SendString(send_buffer,15);
-  
-}
-                    
-void RS232_command27(int num1,int num2)//璁剧疆澶栭儴IO鎺ュ彛宸ヤ綔妯″紡
-{
-
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='I';
- send_buffer[6]='O';
- send_buffer[7]='M';
- send_buffer[8]=',';
- send_buffer[9]=num1+48;
- send_buffer[10]=',';
- send_buffer[11]=num2+48;
- send_buffer[12]=',';
- send_buffer[13]=CRC8_Table(send_buffer, 13);//CRC;
- send_buffer[14]=',';
- send_buffer[15]=0x0D;
- send_buffer[16]=0x0A;
- UART2_SendString(send_buffer,17);
-  
-}
-
-void RS232_command7()//鑾峰彇杈撳叆IO鐘舵�?
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='I';
- send_buffer[5]='O';
- send_buffer[6]='R';
- send_buffer[7]='B';
- send_buffer[8]='I';
- send_buffer[9]='T';
- send_buffer[10]=',';
- send_buffer[11]=CRC8_Table(send_buffer, 11);//CRC;
- send_buffer[12]=',';
- send_buffer[13]=0x0D;
- send_buffer[14]=0x0A;
- UART2_SendString(send_buffer,15);
-  
-}
-void RS232_command8()//鏌ヨ杈撳嚭IO鐢靛钩鐘舵�?
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='I';
- send_buffer[5]='O';
- send_buffer[6]='G';
- send_buffer[7]='R';
- send_buffer[8]='B';
- send_buffer[9]='I';
- send_buffer[10]='T';
- send_buffer[11]=',';
- send_buffer[12]=CRC8_Table(send_buffer, 12);//CRC;
- send_buffer[13]=',';
- send_buffer[14]=0x0D;
- send_buffer[15]=0x0A;
- UART2_SendString(send_buffer,16);
- 
-  
-  
-}
-                    
-void RS232_command34(int num1,int num2,int num3,int num4,int num5)//璁剧疆杈撳嚭IO鐢靛钩鐘舵�?
-{
-
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='I';
- send_buffer[5]='O';
- send_buffer[6]='W';
- send_buffer[7]='B';
- send_buffer[8]='I';
- send_buffer[9]='T';
- send_buffer[10]=',';
- send_buffer[11]=num1+48;
- send_buffer[12]=num2+48;
- send_buffer[13]=num3+48;
- send_buffer[14]=num4+48;
- send_buffer[15]=num5+48;
- send_buffer[16]=',';
- send_buffer[17]=CRC8_Table(send_buffer, 17);//CRC;
- send_buffer[18]=',';
- send_buffer[19]=0x0D;
- send_buffer[20]=0x0A;
- UART2_SendString(send_buffer,21);
-  
-}
-                    
-void RS232_command9()//鏌ヨ鎺у埗鍣ㄥ唴閮ㄦ俯搴?
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='G';
- send_buffer[5]='T';
- send_buffer[6]='E';
- send_buffer[7]='M';
- send_buffer[8]=',';
- send_buffer[9]=CRC8_Table(send_buffer, 9);//CRC;
- send_buffer[10]=',';
- send_buffer[11]=0x0D;
- send_buffer[12]=0x0A;
- UART2_SendString(send_buffer,13);
-  
-}
-void RS232_command10(int num)//璁剧疆娉㈢壒鐜?
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='B';
- send_buffer[6]='T';
- send_buffer[7]='L';
- send_buffer[8]=',';
- send_buffer[9]=num+48;
- send_buffer[10]=',';
- send_buffer[11]=CRC8_Table(send_buffer, 11);//CRC;
- send_buffer[12]=',';
- send_buffer[13]=0x0D;
- send_buffer[14]=0x0A;
- UART2_SendString(send_buffer,15);
-  
-}
-void RS232_command11(int num1,int num2,int num3,int num4)//璁剧疆IP鍦板潃
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='L';
- send_buffer[6]='I';
- send_buffer[7]='P';
- send_buffer[8]=',';
- send_buffer[9]=num1/100+48;
- send_buffer[10]=num1%100/10+48;
- send_buffer[11]=num1%10+48;
- send_buffer[12]=',';
- send_buffer[13]=num2/100+48;
- send_buffer[14]=num2%100/10+48;
- send_buffer[15]=num2%10+48;
- send_buffer[16]=',';
- send_buffer[17]=num3/100+48;
- send_buffer[18]=num3%100/10+48;
- send_buffer[19]=num3%10+48;
- send_buffer[20]=',';
- send_buffer[21]=num4/100+48;
- send_buffer[22]=num4%100/10+48;
- send_buffer[23]=num4%10+48;
- send_buffer[24]=',';
- send_buffer[25]=CRC8_Table(send_buffer, 25);//CRC;
- send_buffer[26]=',';
- send_buffer[27]=0x0D;
- send_buffer[28]=0x0A;
- UART2_SendString(send_buffer,29);
-  
-}
-void RS232_command12(int num1,int num2,int num3,int num4)//璁剧疆瀛愮綉鎺╃爜
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='N';
- send_buffer[6]='M';
- send_buffer[7]=',';
- send_buffer[8]=num1/100+48;
- send_buffer[9]=num1%100/10+48;
- send_buffer[10]=num1%10+48;
- send_buffer[11]=',';
- send_buffer[12]=num2/100+48;
- send_buffer[13]=num2%100/10+48;
- send_buffer[14]=num2%10+48;
- send_buffer[15]=',';
- send_buffer[16]=num3/100+48;
- send_buffer[17]=num3%100/10+48;
- send_buffer[18]=num3%10+48;
- send_buffer[19]=',';
- send_buffer[20]=num4/100+48;
- send_buffer[21]=num4%100/10+48;
- send_buffer[22]=num4%10+48;
- send_buffer[23]=',';
- send_buffer[24]=CRC8_Table(send_buffer, 24);//CRC;
- send_buffer[25]=',';
- send_buffer[26]=0x0D;
- send_buffer[27]=0x0A;
- UART2_SendString(send_buffer,28);
-  
-}
-void RS232_command13(int num1,int num2,int num3,int num4)//璁剧疆缃戝叧
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='G';
- send_buffer[6]='W';
- send_buffer[7]=',';
- send_buffer[8]=num1/100+48;
- send_buffer[9]=num1%100/10+48;
- send_buffer[10]=num1%10+48;
- send_buffer[11]=',';
- send_buffer[12]=num2/100+48;
- send_buffer[13]=num2%100/10+48;
- send_buffer[14]=num2%10+48;
- send_buffer[15]=',';
- send_buffer[16]=num3/100+48;
- send_buffer[17]=num3%100/10+48;
- send_buffer[18]=num3%10+48;
- send_buffer[19]=',';
- send_buffer[20]=num4/100+48;
- send_buffer[21]=num4%100/10+48;
- send_buffer[22]=num4%10+48;
- send_buffer[23]=',';
- send_buffer[24]=CRC8_Table(send_buffer, 24);//CRC;
- send_buffer[25]=',';
- send_buffer[26]=0x0D;
- send_buffer[27]=0x0A;
- UART2_SendString(send_buffer,28);
-  
-}
-void RS232_command14(int num1,int num2,int num3,int num4)//璁剧疆杩滅▼IP
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='R';
- send_buffer[6]='I';
- send_buffer[7]='P';
- send_buffer[8]=',';
- send_buffer[9]=num1/100+48;
- send_buffer[10]=num1%100/10+48;
- send_buffer[11]=num1%10+48;
- send_buffer[12]=',';
- send_buffer[13]=num2/100+48;
- send_buffer[14]=num2%100/10+48;
- send_buffer[15]=num2%10+48;
- send_buffer[16]=',';
- send_buffer[17]=num3/100+48;
- send_buffer[18]=num3%100/10+48;
- send_buffer[19]=num3%10+48;
- send_buffer[20]=',';
- send_buffer[21]=num4/100+48;
- send_buffer[22]=num4%100/10+48;
- send_buffer[23]=num4%10+48;
- send_buffer[24]=CRC8_Table(send_buffer, 24);//CRC;
- send_buffer[25]=',';
- send_buffer[26]=0x0D;
- send_buffer[27]=0x0A;
- UART2_SendString(send_buffer,28);
-  
-}
-void RS232_command15(int num1,int num2,int num3,int num4)//璁剧疆TCPIP
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='L';
- send_buffer[6]='P';
- send_buffer[7]='T';
- send_buffer[8]=',';
- send_buffer[9]=num1+48;
- send_buffer[10]=num2+48;
- send_buffer[11]=num3+48;
- send_buffer[12]=num4+48;
- send_buffer[13]=',';  
- send_buffer[14]=CRC8_Table(send_buffer, 14);//CRC;
- send_buffer[15]=',';
- send_buffer[16]=0x0D;
- send_buffer[17]=0x0A;
- UART2_SendString(send_buffer,18);
-  
-}
-void RS232_command16(int num1,int num2,int num3,int num4)//璁剧疆杩滅▼TCPIP绔彛鍙?
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='R';
- send_buffer[6]='P';
- send_buffer[7]='T';
- send_buffer[8]=',';
- send_buffer[9]=num1+48;
- send_buffer[10]=num2+48;
- send_buffer[11]=num3+48;
- send_buffer[12]=num4+48;
- send_buffer[13]=',';
- send_buffer[14]=CRC8_Table(send_buffer, 10);//CRC;
- send_buffer[15]=',';
- send_buffer[16]=0x0D;
- send_buffer[17]=0x0A;
- UART2_SendString(send_buffer,18);
-  
-}
-void RS232_command17()//鏌ヨ杞欢鐗堟湰鍙?
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='V';
- send_buffer[5]='E';
- send_buffer[6]='R'; 
- send_buffer[7]=',';
- send_buffer[8]=CRC8_Table(send_buffer, 8);//CRC;
- send_buffer[9]=',';
- send_buffer[10]=0x0D;
- send_buffer[11]=0x0A;
- UART2_SendString(send_buffer,12);
-  
-}
-void RS232_command18()//鎭㈠鍑哄巶鍙傛暟
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='R';
- send_buffer[5]='P';
- send_buffer[6]='M'; 
- send_buffer[7]=',';
- send_buffer[8]=CRC8_Table(send_buffer, 8);//CRC;
- send_buffer[9]=',';
- send_buffer[10]=0x0D;
- send_buffer[11]=0x0A;
- UART2_SendString(send_buffer,12);
-  
-}
- void RS232_command19()//閲嶅惎鎺у埗鍣?
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='R';
- send_buffer[5]='S';
- send_buffer[6]='T'; 
- send_buffer[7]=','; 
- send_buffer[8]=CRC8_Table(send_buffer, 8);//CRC;
- send_buffer[9]=',';
- send_buffer[10]=0x0D;
- send_buffer[11]=0x0A;
- UART2_SendString(send_buffer,14);
-  
-}
-void RS232_command20()//璇诲彇TCPIP璁剧疆
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='R';
- send_buffer[5]='T';
- send_buffer[6]='C'; 
- send_buffer[7]='P';
- send_buffer[8]=',';
- send_buffer[9]=CRC8_Table(send_buffer, 9);//CRC;
- send_buffer[10]=',';
- send_buffer[11]=0x0D;
- send_buffer[12]=0x0A;
- UART2_SendString(send_buffer,13);
-  
-}
-void RS232_command21()//鑾峰彇鎶ヨ淇℃伅
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='G';
- send_buffer[5]='L';
- send_buffer[6]='E'; 
- send_buffer[7]=',';
- send_buffer[8]=CRC8_Table(send_buffer,8);//CRC;
- send_buffer[9]=',';
- send_buffer[10]=0x0D;
- send_buffer[11]=0x0A;
- UART2_SendString(send_buffer,12);
-  
-}
-void RS232_command35()//娓呴櫎鎶ヨ淇℃伅
-{
- 
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='C';
- send_buffer[5]='L';
- send_buffer[6]='E'; 
- send_buffer[7]=',';
- send_buffer[8]=CRC8_Table(send_buffer,8);//CRC;
- send_buffer[9]=',';
- send_buffer[10]=0x0D;
- send_buffer[11]=0x0A;
- UART2_SendString(send_buffer,12);
-  
-}
-void RS232_command36()//淇濆瓨鎿嶄綔
-{
- send_buffer[0]='V';
- send_buffer[1]='D';
- send_buffer[2]='C';
- send_buffer[3]=',';
- send_buffer[4]='S';
- send_buffer[5]='A';
- send_buffer[6]='V'; 
- send_buffer[7]=',';
- send_buffer[8]=CRC8_Table(send_buffer,8);//CRC;
- send_buffer[9]=',';
- send_buffer[10]=0x0D;
- send_buffer[11]=0x0A;
- UART2_SendString(send_buffer,12);
+	
+	send_buffer[15]=CRC8_Table(send_buffer, 15);
+	UART2_SendString(send_buffer,19);	
 
 }
-void RS232_commandOK()
-{
- send_buffer[0]='O';
- send_buffer[1]='K';
- send_buffer[2]=0x0D;
- send_buffer[3]=0x0A;
+//查询频闪脉宽
 
-  UART2_SendString(send_buffer,4);
+void CodeP005Red(int chx)
+{
+
+	gmemcpy(send_buffer,"IDC,GTR,3,?,\r\n",14);
+	send_buffer[8]=chx+'0';
+
+	send_buffer[10]=CRC8_Table(send_buffer, 10);
+	UART2_SendString(send_buffer,14);	
+
 }
 
-void RS232_commandRST()
+//设置通道默认输出模式
+void CodeP006Set(int chx,int Value)
+{
+
+	gmemcpy(send_buffer,"IDC,SMOUT,1,1,?,\r\n",18);
+	send_buffer[10]=chx+'0';
+
+	send_buffer[12]=Value+'0';
+
+	send_buffer[14]=CRC8_Table(send_buffer, 14);
+	UART2_SendString(send_buffer,18);		
+
+}
+//查询通道默认输出模式
+void CodeP006Red(int chx)
+{
+	gmemcpy(send_buffer,"IDC,GMOUT,1,?,\r\n",16);
+	send_buffer[10]=chx+'0';
+
+	send_buffer[12]=CRC8_Table(send_buffer, 12);
+	UART2_SendString(send_buffer,16);		
+
+}
+
+//设置外部输入IO接口的工作模式
+void CodeP007Set(int chx,int Mode)
+{
+	gmemcpy(send_buffer,"IDC,SIOIM,1,1,?,\r\n",18);
+	send_buffer[10]=chx+'0';
+	send_buffer[12]=Mode+'0';
+
+	send_buffer[14]=CRC8_Table(send_buffer, 14);
+	UART2_SendString(send_buffer,18);
+}
+
+//查询外部输入IO接口的工作模式
+ void CodeP007Rad(int chx)
+{
+	gmemcpy(send_buffer,"IDC,GIOIM,1,?,\r\n",16);
+	send_buffer[10]=chx+'0';
+
+	send_buffer[12]=CRC8_Table(send_buffer, 12);
+	UART2_SendString(send_buffer,16);
+
+}
+
+//设置外部输出IO接口的工作模式
+void CodeP008Set(int chx,int Mode)
  {
-   send_buffer[0]='V';
-   send_buffer[1]='D';
-   send_buffer[2]='C';
-   send_buffer[3]=',';
-   send_buffer[4]='R';
-   send_buffer[5]='S';
-   send_buffer[6]='T';
-   send_buffer[7]=',';
-   send_buffer[8]=CRC8_Table(send_buffer,8);//CRC;
-   send_buffer[9]=',';
-   send_buffer[10]=0x0D;
-   send_buffer[11]=0x0A;
-   
-    UART2_SendString(send_buffer,12);
- }
+ 
+	 gmemcpy(send_buffer,"IDC,SIOOM,1,1,?,\r\n",18);
+	 send_buffer[10]=chx+'0';
+	 send_buffer[12]=Mode+'0';
+
+	 
+	 send_buffer[14]=CRC8_Table(send_buffer, 14);
+	 UART2_SendString(send_buffer,18);
+
+}
+
+//查询外部输出IO接口的工作模式
+void CodeP008Red(int chx)
+{
+	gmemcpy(send_buffer,"IDC,GIOOM,1,?,\r\n",16);
+	send_buffer[10]=chx+'0';
+	
+	send_buffer[12]=CRC8_Table(send_buffer, 12);
+	UART2_SendString(send_buffer,16);
+
+}
+
+//查询输入IO电平状态
+void CodeP009Red()
+{
+
+	gmemcpy(send_buffer,"IDC,IORBIT,?,\r\n",15);
+
+	send_buffer[11]=CRC8_Table(send_buffer, 11);
+	UART2_SendString(send_buffer,15);
+}
+
+//设置输出IO状态
+void CodeP010Set(int Value[])
+{
+	gmemcpy(send_buffer,"IDC,IOWBIT,00000,?,\r\n",21);
+
+	send_buffer[11]=Value[0]+'0';
+	send_buffer[12]=Value[1]+'0';
+	send_buffer[13]=Value[2]+'0';
+	send_buffer[14]=Value[3]+'0';
+	send_buffer[15]=Value[4]+'0';
+
+	
+	send_buffer[17]=CRC8_Table(send_buffer, 17);
+	UART2_SendString(send_buffer,21);		
+}
+
+//查询输出IO状态
+void CodeP010Rad()
+{
+	gmemcpy(send_buffer,"IDC,IOGRBIT,?,\r\n",16);
+	
+	send_buffer[12]=CRC8_Table(send_buffer, 12);
+	UART2_SendString(send_buffer,16);
+
+}
+
+//查询控制器温度
+void CodeP011Red()
+{
+	gmemcpy(send_buffer,"IDC,GTEM,?,\r\n",13);
+	
+	send_buffer[9]=CRC8_Table(send_buffer, 9);
+	UART2_SendString(send_buffer,13);	
+
+}
+
+//设置串口波特率
+void CodeP012Set(int Value)
+{
+
+	gmemcpy(send_buffer,"IDC,SBTL,1,?,\r\n",15);
+
+	send_buffer[9]=Value+'0';
+	
+	send_buffer[11]=CRC8_Table(send_buffer, 11);
+	UART2_SendString(send_buffer,15);	
+
+
+
+}
+//读取串口波特率
+void CodeP012Red()
+{
+	gmemcpy(send_buffer,"IDC,GBTL,?,\r\n",13);
+		
+	send_buffer[9]=CRC8_Table(send_buffer, 9);
+	UART2_SendString(send_buffer,13);	
+
+}
+
+//设置控制器IP地址
+void CodeP013Set(int Value[])
+{
+
+	int i=0;
+	int temp=9;
+	gmemcpy(send_buffer,"IDC,SLIP,192,168,001,100,?,\r\n",29);
+
+	for(;i<4;i++)
+	{
+		send_buffer[temp++]=((Value[i]/100)%10)+'0';
+		send_buffer[temp++]=((Value[i]/10)%10)+'0';
+		send_buffer[temp++]=(Value[i]%10)+'0';
+		temp++;
+	}
+
+	send_buffer[25]=CRC8_Table(send_buffer, 25);
+	UART2_SendString(send_buffer,29);
+}
+
+//读取控制器IP地址
+void CodePIPRea()
+{
+	gmemcpy(send_buffer,"IDC,RTCP,?,\r\n",13);
+			
+	send_buffer[9]=CRC8_Table(send_buffer, 9);
+	UART2_SendString(send_buffer,13);	
+
+}
+
+//设置子网掩码
+void CodeP014Set(int Value[])
+{
+
+	int i=0;
+	int temp=8;
+	gmemcpy(send_buffer,"IDC,SNM,192,168,001,100,?,\r\n",28);
+
+	for(;i<4;i++)
+	{
+		send_buffer[temp++]=((Value[i]/100)%10)+'0';
+		send_buffer[temp++]=((Value[i]/10)%10)+'0';
+		send_buffer[temp++]=(Value[i]%10)+'0';
+		temp++;
+	}
+
+	send_buffer[24]=CRC8_Table(send_buffer, 24);
+	UART2_SendString(send_buffer,28);
+}
+
+
+
+
+
+
+
+

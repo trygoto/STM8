@@ -1,8 +1,25 @@
 #ifndef  _task_H
 #define  _task_H
-
 #include"stm8s.h"
 
+/*************************************************  
+ Copyright ? Linkhou robot Co., Ltd. 2017-2018. All rights reserved.    
+ File name: task.h  
+ Author: rexvan 
+ ID£º1606003      
+ Version: V2.0       
+ Date:2017/11/21 9:43:04   
+ Description: Controller panel                  		           
+ Others:          
+ History:                      
+		Date: 2017/11/21 9:43:04          
+		Author: rexvan   
+		ID: 1606003       
+		Modification: rexvan
+ *************************************************/
+
+extern bool teplet;
+extern bool mode_flag;
 
 int key_NUM(void);
 void HELL_SHOW(void);

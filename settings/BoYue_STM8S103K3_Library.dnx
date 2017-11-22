@@ -24,7 +24,7 @@
         <ShowSource>1</ShowSource>
     </TraceHelper>
     <DebugChecksum>
-        <Checksum>387926116</Checksum>
+        <Checksum>1286560332</Checksum>
     </DebugChecksum>
     <DisAssemblyWindow>
         <NumStates>_ 1</NumStates>
@@ -87,7 +87,9 @@
         <LogFile>_ ""</LogFile>
     </TermIOLog>
     <Breakpoints>
-        <Count>0</Count>
+        <Bp0>_ "STD_CODE" "{$PROJ_DIR$\USER\task.c}.964.3" 1 0 0 0 "" 0 ""</Bp0>
+        <Bp1>_ "STD_CODE" "{$PROJ_DIR$\USER\task.c}.1067.2" 1 0 0 0 "" 0 ""</Bp1>
+        <Count>2</Count>
     </Breakpoints>
     <Aliases>
         <A0>_ "C:\Users\LQ\Desktop\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\STM8S_StdPeriph_Driver\src\stm8s_uart2.c" "C:\Users\LQ\Desktop\LH-LVDC-A\博越电子_STM8S103K3开发板_实验3【库函数】_定时器2周期中断\STM8S_StdPeriph_Driver\src\stm8s_uart2.c"</A0>

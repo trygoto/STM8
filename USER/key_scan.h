@@ -9,7 +9,8 @@
 #define N_key    0             //鏃犻敭 
 #define S_key    1             //鍗曢敭  
 #define D_key    2             //鍙岄敭  
-#define L_key    3             //闀块敭 
+#define L_key    3             //闀块敭
+#define T_key    4
 #define key_state_0 0  
 #define key_state_1 1  
 #define key_state_2 2 
@@ -18,6 +19,17 @@ extern u8 key;
 extern u8 short_key;
 extern u8 double_key;
 extern u8 long_key;
+
+extern u8 three_key;
+
+
+extern u8 short_key_flag;// 短按标志
+extern u8 key_long_down; //长按标志
+extern u8 doubleClick;   //双击标志
+extern u8 add_flag; //慢加标志
+extern u8 dec_flag;
+
+
 
 
 #define CodingsWitch_A   GPIO_ReadInputPin(GPIOA,GPIO_PIN_6)//
